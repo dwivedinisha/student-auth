@@ -23,7 +23,7 @@ export default function Login() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}>Student Login</h2>
+        <h2 style={styles.title}>🎓 Student Login</h2>
         <input
           placeholder="Email"
           style={styles.input}

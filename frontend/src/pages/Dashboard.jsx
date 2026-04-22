@@ -28,7 +28,8 @@ export default function Dashboard() {
         { oldPassword: oldPass, newPassword: newPass }, { headers });
       setMsg(data.message);
       setMsgType('success');
-      setOldPass(''); setNewPass('');
+      setOldPass('');
+      setNewPass('');
     } catch (err) {
       setMsg(err.response?.data?.message || 'Error updating password');
       setMsgType('error');
@@ -110,6 +111,7 @@ export default function Dashboard() {
 
         {/* Logout */}
         <button style={styles.logoutBtn} onClick={logout}>🚪 Logout</button>
+
       </div>
     </div>
   );

@@ -4,26 +4,34 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const API = 'https://student-auth-1-9jkw.onrender.com/api';
 
-export default function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+export default function Register() {
+  const [form, setForm] = useState({ name: '', email: '', password: '', course: '' });
   const [msg, setMsg] = useState('');
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     try {
-      const { data } = await axios.post(`${API}/login`, form);
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('student', JSON.stringify(data.student));
-      navigate('/dashboard');
+      await axios.post(`${API}/register`, form);
+      setSuccess(true);
+      setMsg('Registered successfully! Redirecting to login...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setMsg(err.response?.data?.message || 'Invalid credentials');
+      setSuccess(false);
+      setMsg(err.response?.data?.message || 'Registration failed');
     }
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}>Student Login</h2>
+        <h2 style={styles.title}>🎓 Student Register</h2>
+        <input
+          placeholder="Full Name"
+          style={styles.input}
+          value={form.name}
+          onChange={e => setForm({ ...form, name: e.target.value })}
+        />
         <input
           placeholder="Email"
           style={styles.input}
@@ -37,10 +45,16 @@ export default function Login() {
           value={form.password}
           onChange={e => setForm({ ...form, password: e.target.value })}
         />
-        <button style={styles.btn} onClick={handleSubmit}>Login</button>
-        {msg && <p style={styles.error}>{msg}</p>}
+        <input
+          placeholder="Course (e.g. BCA, MCA)"
+          style={styles.input}
+          value={form.course}
+          onChange={e => setForm({ ...form, course: e.target.value })}
+        />
+        <button style={styles.btn} onClick={handleSubmit}>Register</button>
+        {msg && <p style={success ? styles.success : styles.error}>{msg}</p>}
         <p style={styles.link}>
-          New student? <Link to="/register" style={styles.anchor}>Register here</Link>
+          Already registered? <Link to="/login" style={styles.anchor}>Login here</Link>
         </p>
       </div>
     </div>
@@ -54,6 +68,7 @@ const styles = {
   input: { padding: '10px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '15px' },
   btn: { padding: '10px', background: '#4f46e5', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '15px' },
   error: { color: 'red', textAlign: 'center' },
+  success: { color: 'green', textAlign: 'center' },
   link: { textAlign: 'center' },
   anchor: { color: '#4f46e5', fontWeight: 'bold' }
 };

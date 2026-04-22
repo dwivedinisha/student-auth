@@ -2,7 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const API = 'http://localhost:5000/api';
+const API = 'https://student-auth-1-9jkw.onrender.com/api';
+
 
 export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', course: '' });
